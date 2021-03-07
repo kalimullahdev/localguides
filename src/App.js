@@ -14,19 +14,26 @@ import Slider from './pages/Slider/Slider';
 function App() {
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/slider">
-            <Slider/>
-          </Route>
-          <Route path="/register">
-             <Register/>
-          </Route>
-          <Route path="/signin">
-            <SignIn/>
-          </Route>
-        </Switch>
-    </Router>
+      
+      
+
+
+
+      <div className="Routing">
+        <Router>
+          <Switch>
+            <Route path="/slider">
+              <Slider/>
+            </Route>
+            <Route path="/register">
+              <Register/>
+            </Route>
+            <Route path="/signin">
+              <SignIn/>
+            </Route>
+          </Switch>
+      </Router>
+      </div>
     </div>
   );
 }
