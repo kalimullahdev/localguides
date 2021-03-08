@@ -2,7 +2,7 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 
-const app = firebase.initializeApp({
+const firebaseApp = firebase.initializeApp({
     apiKey: "AIzaSyAVyXN2JZi0CUWMu92zsPq8t7zxXFrEnz8",
     authDomain: "localguides-ea89b.firebaseapp.com",
     databaseURL: "https://localguides-ea89b-default-rtdb.firebaseio.com",
@@ -13,5 +13,7 @@ const app = firebase.initializeApp({
     measurementId: "G-NTQBW1VW38"
   });
 
-  export const auth = app.auth();
-  export default app;
+  export const auth = firebaseApp.auth();
+  export default firebaseApp;
+
+

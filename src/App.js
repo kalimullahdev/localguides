@@ -9,16 +9,11 @@ import {
 import Register from './pages/Register/Register';
 import SignIn from './pages/SignIn/SignIn';
 import Slider from './pages/Slider/Slider';
-
+import Main from './pages/Main/Main';
 
 function App() {
   return (
     <div className="App">
-      
-      
-
-
-
       <div className="Routing">
         <Router>
           <Switch>
@@ -30,6 +25,9 @@ function App() {
             </Route>
             <Route path="/signin">
               <SignIn/>
+            </Route>
+            <Route path="/main">
+              <Main/>
             </Route>
           </Switch>
       </Router>
