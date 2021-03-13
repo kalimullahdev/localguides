@@ -9,7 +9,7 @@ import {
 import Register from './pages/Register/Register';
 import SignIn from './pages/SignIn/SignIn';
 import Slider from './pages/Slider/Slider';
-import Main from './pages/Main/Main';
+import TrendingPost from './pages/TrendingPost/TrendingPost';
 
 function App() {
   return (
@@ -20,6 +20,8 @@ function App() {
             <Route path="/slider">
               <Slider/>
             </Route>
+          
+            
             <Route path="/register">
               <Register/>
             </Route>
@@ -27,7 +29,7 @@ function App() {
               <SignIn/>
             </Route>
             <Route path="/main">
-              <Main/>
+              <TrendingPost/>
             </Route>
           </Switch>
       </Router>
