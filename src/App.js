@@ -17,11 +17,9 @@ function App() {
       <div className="Routing">
         <Router>
           <Switch>
-            <Route path="/slider">
+            <Route exact path="/">
               <Slider/>
             </Route>
-          
-            
             <Route path="/register">
               <Register/>
             </Route>
