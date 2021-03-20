@@ -9,11 +9,12 @@ import {
 import Register from './pages/Register/Register';
 import SignIn from './pages/SignIn/SignIn';
 import Slider from './pages/Slider/Slider';
-import TrendingPost from './pages/TrendingPost/TrendingPost';
+import Main from './pages/Main/Main';
 
 function App() {
   return (
     <div className="App">
+
       <div className="Routing">
         <Router>
           <Switch>
@@ -27,7 +28,7 @@ function App() {
               <SignIn/>
             </Route>
             <Route path="/main">
-              <TrendingPost/>
+              <Main/>
             </Route>
           </Switch>
       </Router>

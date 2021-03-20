@@ -11,7 +11,7 @@ const TrendingPost = () => {
     return (
         <Container maxWidth="sm" >
             <Box py={2}>
-            <Typography  variant="h3" color="textSecondary" component="h3" > 
+            <Typography  variant="h3"  component="h3" > 
                 Trending Post...
             </Typography>
             </Box>
