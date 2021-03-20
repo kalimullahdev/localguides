@@ -6,7 +6,7 @@ const localGuideIntro = [
     name: 'maria ferguson',
     title: 'office manager',
     quote:
-      'Fingerstache umami squid, kinfolk subway tile selvage tumblr man braid viral kombucha gentrify fanny pack raclette pok pok mustache.',
+      'Read Articles of the world wonderfull places and locations, along with photos, with local guide information. You will get Trending and highly rated articles on our web app.',
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ const localGuideIntro = [
     name: 'john doe',
     title: 'regular guy',
     quote:
-      'Gastropub sustainable tousled prism occupy. Viral XOXO roof party brunch actually, chambray listicle microdosing put a bird on it paleo subway tile squid umami.',
+      'Through our app do research and visit bueatiful places, with friends anywhere in the world and enjoy the journey. Do meetup with other local guides and save your money.',
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const localGuideIntro = [
     name: 'peter smith',
     title: 'product designer',
     quote:
-      'Drinking vinegar polaroid street art echo park, actually semiotics next level butcher master cleanse hammock flexitarian ethical paleo.',
+      'Through our Maps service, get location on the map of place. Get direction, live location, on the integrated google maps API. ',
   },
 ];
 

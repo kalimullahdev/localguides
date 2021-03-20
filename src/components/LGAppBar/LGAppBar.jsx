@@ -174,7 +174,7 @@ export default function LGAppBar() {
             <MenuIcon />
           </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
-            Material-UI
+            Local Guides
           </Typography>
           <div className={classes.search}>
             <div className={classes.searchIcon}>
