@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import TrendingPost from '../TrendingPost/TrendingPost';
 import ProfilePage from '../ProfilePage/ProfilePage';
+import EditProfilePage from '../EditProfilePage/EditProfilePage';
 
 
 function Main(){
@@ -20,6 +21,9 @@ function Main(){
               </Route>
             <Route path="/main/trendingPost">
               <TrendingPost/>
+            </Route>
+            <Route path="/main/editprofile">
+              <EditProfilePage/>
             </Route>
             </Switch>
           </Router>

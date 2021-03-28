@@ -2,6 +2,7 @@ import { Container, Avatar, Grid, Button, Box, Typography} from '@material-ui/co
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ArticlesInProfile from '../../components/ArticlesInProfile/ArticlesInProfile';
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +32,9 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2),
     },
     
+    editButtonStyle:{
+        
+    },
 
   }));
   
@@ -38,7 +42,12 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfilePage = () => {
     const classes = useStyles();
+    const history = useHistory();
 
+    function moveToEditPage(){
+      history.push("/main/editprofile");
+    }
+    
     return (
         <Container maxWidth="lg" className={classes.root} >
             <Grid
@@ -64,6 +73,11 @@ const ProfilePage = () => {
                         <Typography className={classes.horizantalMargin} >
                             5.3k Followers
                         </Typography>
+                        
+                        <Button  className={classes.buttonStyle} onClick={ () => moveToEditPage() }  >
+                                Edit
+                        </Button>
+                        
                     </Box>
 
                     <Typography variant="subtitle1">
@@ -90,7 +104,6 @@ const ProfilePage = () => {
             alignItems="center"
             >
                 <ArticlesInProfile/>
-            
                 <ArticlesInProfile/>
                 <ArticlesInProfile/>
                 <ArticlesInProfile/>
