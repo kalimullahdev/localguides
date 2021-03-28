@@ -6,6 +6,7 @@ import {
   Route,
 } from "react-router-dom";
 import TrendingPost from '../TrendingPost/TrendingPost';
+import ProfilePage from '../ProfilePage/ProfilePage';
 
 
 function Main(){
@@ -14,6 +15,9 @@ function Main(){
         <LGAppBar/>
           <Router>
             <Switch>
+              <Route path="/main/profile">
+                <ProfilePage/>
+              </Route>
             <Route path="/main/trendingPost">
               <TrendingPost/>
             </Route>
