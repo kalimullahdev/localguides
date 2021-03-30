@@ -71,6 +71,7 @@ const EditProfilePage = () => {
 
     return (
         <Container maxWidth="sm" className={classes.root} >
+        <form onSubmit={handleFireBaseUpload}>
             <Grid
             container
             direction="column"
@@ -78,7 +79,7 @@ const EditProfilePage = () => {
             alignItems="space-evenly"
             className={classes.marginWhole}
             >
-                
+
             <Grid
             container
             direction="row"
@@ -88,28 +89,36 @@ const EditProfilePage = () => {
             >
                 <Typography>Upload Image</Typography>
                 
-                <form onSubmit={handleFireBaseUpload}>
-                    <input accept="image/*" className={classes.input} id="icon-button-file" type="file"     onChange={handleImageAsFile} />
-                    <label htmlFor="icon-button-file">
-                        <IconButton color="primary" aria-label="upload picture" component="span">
-                        <PhotoCamera />
-                        </IconButton>
-                    </label>
-                    <button>upload to firebase</button>
-                </form>
+                <Box>
+                  <input accept="image/*" className={classes.input} id="icon-button-file" type="file"     onChange={handleImageAsFile} />
+                      <label htmlFor="icon-button-file">
+                          <IconButton color="primary" aria-label="upload picture" component="span">
+                          <PhotoCamera />
+                          </IconButton>
+                      </label>
+                      {/* <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.button}
+                      >
+                        Send </Button> */}
+                </Box>
 
             </Grid>
-            <Box  >
-                <img 
-                className={classes.imageStyle}
-                src={imageAsUrl.imgUrl} 
-                alt="upload profile" />
-            </Box>
+            {
+              imageAsUrl.imgUrl ? <Box  >
+              <img 
+              className={classes.imageStyle}
+              src={imageAsUrl.imgUrl} 
+              alt="upload profile" />
+          </Box>: null
+            }
             <TextField
                 required
                 id="filled-required"
                 label="Name"
-                defaultValue="Arsalan"
+                defaultValue="Muhammad Arsalan"
                 variant="filled"
                 className={classes.marginWhole}
                 />
@@ -117,7 +126,7 @@ const EditProfilePage = () => {
                 required
                 id="filled-required"
                 label="Description"
-                defaultValue="Arsalan Khan ki desriptioin"
+                defaultValue="Arsalan is a Tourist who has visited many places in Pakistan."
                 variant="filled"
                 className={classes.marginWhole}
                 />
@@ -126,11 +135,13 @@ const EditProfilePage = () => {
             justifyContent="center"
             alignContent="center"
             >
-                <Button variant="contained" color="primary" className={classes.buttonStyle}>
+                <Button type="submit" variant="contained" color="primary" className={classes.buttonStyle}>
                 Save
                 </Button>
             </Box>
+
         </Grid>
+            </form>
         </Container>
     );
 };
