@@ -8,6 +8,7 @@ import {
 import TrendingPost from '../TrendingPost/TrendingPost';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import EditProfilePage from '../EditProfilePage/EditProfilePage';
+import SingleArticle from '../SingleArticle/SingleArticle';
 
 
 function Main(){
@@ -18,6 +19,9 @@ function Main(){
             <Switch>
               <Route path="/main/profile">
                 <ProfilePage/>
+              </Route>
+              <Route path="/main/singleArticle">
+                <SingleArticle/>
               </Route>
             <Route path="/main/trendingPost">
               <TrendingPost/>

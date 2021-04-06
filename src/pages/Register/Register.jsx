@@ -32,7 +32,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
+function writeUserData(userId, username, email) {
+  firebaseApp.database().ref('users/' + userId).set({
+    username: username,
+    email: email,
+    phoneNumber: "",
+    followers:"",
+    about:"",
+    location:"",
+    profilePic:"",
+    uid:userId,
+  });
+}
 
 
 export default function Register(props) {
@@ -41,16 +52,18 @@ export default function Register(props) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
 
 
 
     function handleSubmit(event) {
       event.preventDefault();
-      console.log( 'Email:', email, 'Password: ', password);
+      // console.log( 'Email:', email, 'Password: ', password, 'Username', username);
       firebaseApp.auth().createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed in 
-        // var user = userCredential.user;
+        var userID = userCredential.user.uid;
+        writeUserData(userID, username, email);
         history.push('/main');
         // ...
       })
@@ -81,6 +94,7 @@ export default function Register(props) {
                 id="username"
                 label="User Name"
                 name="username"
+                onInput={ e=>setUsername(e.target.value)}
                 autoComplete="username"
               />
             </Grid>
