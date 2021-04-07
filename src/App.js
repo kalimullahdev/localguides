@@ -1,21 +1,38 @@
 import './App.css';
 
 import {
-  BrowserRouter as Router,
   Switch,
   Route,
+  useHistory,
 } from "react-router-dom";
 
 import Register from './pages/Register/Register';
 import SignIn from './pages/SignIn/SignIn';
 import Slider from './pages/Slider/Slider';
 import Main from './pages/Main/Main';
+import { useEffect } from 'react';
+import firebaseApp from './firebase/firebase';
+
+
 
 function App() {
+  let history = useHistory();
+
+  useEffect(() => {
+     firebaseApp.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("User is signed In");
+        history.push('/main/trendingPost');
+      } else {
+        console.log("No user is signed in.");
+      }
+    });  
+  }, [history]);
+
+
   return (
     <div className="App">
       <div className="Routing">
-        <Router>
           <Switch>
             <Route exact path="/">
               <Slider/>
@@ -30,7 +47,6 @@ function App() {
               <Main/>
             </Route>
           </Switch>
-      </Router>
       </div>
     </div>
   );
