@@ -1,8 +1,9 @@
 import { Container, Avatar, Grid, Button, Box, Typography} from '@material-ui/core';
-import React from 'react';
+import React, { useEffect,useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import ArticlesInProfile from '../../components/ArticlesInProfile/ArticlesInProfile';
 import { useHistory } from "react-router-dom";
+import firebaseApp from '../../firebase/firebase';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,9 +45,54 @@ const ProfilePage = () => {
     const classes = useStyles();
     const history = useHistory();
 
+    const [sUsername, setsUsername] = useState('');
+    const [sProfilePic, setsProfilePic] = useState('');
+    const [sAbout, setsAbout] = useState('');
+    const [sFollowers, setsFollowers] = useState('');
+    const [sCurrentUserArticles, setsCurrentUserArticles] = useState([]);
+
     function moveToEditPage(){
       history.push("/main/editprofile");
     }
+
+    useEffect(() => {
+        firebaseApp.auth().onAuthStateChanged((user) => {
+            if (user) {
+                // Get Current User From Database
+                const currentUserRef = firebaseApp.database().ref('users').child(user.uid);
+                console.log(currentUserRef);
+                currentUserRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                setsUsername(data.username);
+                setsProfilePic(data.profilePic);
+                setsAbout(data.about);
+                setsFollowers(data.followers);
+                
+                // Get All Articles of That Users
+                const articlesRef = firebaseApp.database().ref('articles');
+                articlesRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    const currentUserArticles = [];
+                    for(let aid in data){
+                        const articleRef = firebaseApp.database().ref('articles').child(aid);
+                        articleRef.on('value', (snapshot) => {
+                            const articleData = snapshot.val();
+                            if(articleData.uid === user.uid){
+                                currentUserArticles.push(articleData);
+                            }
+                        } );
+
+                    }
+                   setsCurrentUserArticles(currentUserArticles);
+                  });
+
+                });
+            } else {
+              // User not logged in or has just logged out.
+            }
+          });
+
+    }, []);
     
     return (
         <Container maxWidth="lg" className={classes.root} >
@@ -55,7 +101,7 @@ const ProfilePage = () => {
             direction="row"
             justify="space-evenly"
             alignItems="center">
-                <Avatar alt="Remy Sharp" src="https://source.unsplash.com/random"  className={classes.avatar} />
+                <Avatar alt="Remy Sharp" src={sProfilePic}  className={classes.avatar} />
 
 
                 <Box
@@ -68,23 +114,22 @@ const ProfilePage = () => {
                     flexDirection="row"
                     >
                         <Typography className={classes.nameStyle}>
-                            Muhammad Arsalan
+                            {sUsername}
                         </Typography>
                         <Typography className={classes.horizantalMargin} >
-                            5.3k Followers
+                            {sFollowers} Followers
                         </Typography>
                         
-                        <Button  className={classes.buttonStyle} onClick={ () => moveToEditPage() }  >
+                        <Button color='primary' variant='contained' className={classes.buttonStyle} onClick={ () => moveToEditPage() }  >
                                 Edit
                         </Button>
                         
                     </Box>
 
                     <Typography variant="subtitle1">
-                        Arsalan is a Tourist who has visited many places in Pakistan.
+                        {sAbout}
                     </Typography>
                 </Box>
-                
                 
                 <Box
                 display="flex"
@@ -103,11 +148,12 @@ const ProfilePage = () => {
             justify="space-evenly"
             alignItems="center"
             >
-                <ArticlesInProfile/>
-                <ArticlesInProfile/>
-                <ArticlesInProfile/>
-                <ArticlesInProfile/>
-                <ArticlesInProfile/>
+             
+             {
+                 sCurrentUserArticles ?
+                    sCurrentUserArticles.map((article) => <ArticlesInProfile article={article}  />  )
+                 : ''
+             }  
             </Grid>
 
         </Container>

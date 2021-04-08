@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SinglePost(props) {
   const classes = useStyles();
-  const {id, title, description, uid} = props.postData;
+  const {id, title, description, uid, articlePic} = props.postData;
   const [sUsername, setsUsername] = useState('');
   const [sProfilePic, setsProfilePic] = useState('');
 
@@ -96,7 +96,7 @@ export default function SinglePost(props) {
       </div>
       <CardMedia
         className={classes.cover}
-        image="https://images.unsplash.com/photo-1547656807-9733c2b738c2?ixid=MXwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80"
+        image={articlePic}
         title="Live from space album cover"
       />
     </Card>

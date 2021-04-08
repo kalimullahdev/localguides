@@ -20,24 +20,24 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 
-export default function ArticlesInProfile() {
+export default function ArticlesInProfile(props) {
   const classes = useStyles();
+  const {title, description, articlePic} = props.article;
 
   return (
     <Card className={classes.root}>
       <CardActionArea>
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
-            Lizard
+            {title}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000 species, ranging
-            across all continents except Antarctica
+            {description}
           </Typography>
         </CardContent>
         <CardMedia
           className={classes.media}
-          image="https://source.unsplash.com/collection/190727/1600x900"
+          image={articlePic}
           title="Contemplative Reptile"
         />
       </CardActionArea>
