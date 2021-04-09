@@ -8,6 +8,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import { red } from '@material-ui/core/colors';
 import firebaseApp from '../../firebase/firebase';
+import { useHistory } from 'react-router';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,6 +16,9 @@ const useStyles = makeStyles((theme) => ({
     height:200,
     display: 'flex',
     margin:theme.spacing(1),
+    cursor: 'pointer',
+    
+
   },
   details: {
     display: 'inline-block',
@@ -27,9 +31,11 @@ const useStyles = makeStyles((theme) => ({
   },
   cardContent: {
       paddingTop: '4px',
+      userSelect:'none',
   },
   cardHeader: {
-    paddingBottom:'0px'
+    paddingBottom:'0px',
+    userSelect:'none',
   },
   cover: {
     width: '40%',
@@ -55,9 +61,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SinglePost(props) {
   const classes = useStyles();
-  const {id, title, description, uid, articlePic} = props.postData;
+  const {id, title, description, uid, articlePic, aid} = props.postData;
   const [sUsername, setsUsername] = useState('');
   const [sProfilePic, setsProfilePic] = useState('');
+  const history = useHistory();
 
   useEffect(() => {
     firebaseApp.database().ref("users").child(uid).get().then(function(snapshot) {
@@ -72,12 +79,21 @@ export default function SinglePost(props) {
       }
     }).catch(function(error) {
       console.error(error);
-    });
-    
+    });  
   }, [uid]);
 
+
+  function articleDetails({aid}){
+    history.push({
+      pathname: '/main/singleArticle',
+      state: { detail: aid }
+    });
+  }
+  
+
+
   return (
-    <Card className={classes.root} key={id} >
+    <Card className={classes.root} key={id} onClick={()=> articleDetails({aid})} >
       <div className={classes.details}>
       <CardHeader className={classes.cardHeader}
         avatar={

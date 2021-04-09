@@ -16,8 +16,8 @@ const TrendingPost = () => {
           const data = snapshot.val();
           console.log(data);
           const trendingArticles = [];
-          for(let id in data){
-            trendingArticles.push(data[id])
+          for(let aid in data){
+            trendingArticles.push({aid,...data[aid]})
           }
           setarticlesList(trendingArticles);
         });
