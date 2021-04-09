@@ -50,23 +50,43 @@ const ProfilePage = () => {
     const [sAbout, setsAbout] = useState('');
     const [sFollowers, setsFollowers] = useState('');
     const [sCurrentUserArticles, setsCurrentUserArticles] = useState([]);
+    const [sUid, setsUid] = useState('');
 
     function moveToEditPage(){
-      history.push("/main/editprofile");
+        firebaseApp.database().ref("users/").child(sUid).get().then(function(snapshot) {
+            if (snapshot.exists()) {
+              const lgUserData = snapshot.val();
+              history.push({
+                pathname: '/main/editprofile',
+                state: { detail: lgUserData }
+              })
+            }
+            else {
+              console.log("No data available");
+            }
+          }).catch(function(error) {
+            console.error(error);
+          });
+    
+    
+          // const localGuideRef = firebaseApp.database().ref("users/").child(row.uid);
+
     }
+
+
 
     useEffect(() => {
         firebaseApp.auth().onAuthStateChanged((user) => {
             if (user) {
                 // Get Current User From Database
                 const currentUserRef = firebaseApp.database().ref('users').child(user.uid);
-                console.log(currentUserRef);
                 currentUserRef.on('value', (snapshot) => {
                 const data = snapshot.val();
                 setsUsername(data.username);
                 setsProfilePic(data.profilePic);
                 setsAbout(data.about);
                 setsFollowers(data.followers);
+                setsUid(data.uid);
                 
                 // Get All Articles of That Users
                 const articlesRef = firebaseApp.database().ref('articles');
@@ -117,7 +137,7 @@ const ProfilePage = () => {
                             {sUsername}
                         </Typography>
                         <Typography className={classes.horizantalMargin} >
-                            {sFollowers} Followers
+                            {sFollowers} followers
                         </Typography>
                         
                         <Button color='primary' variant='contained' className={classes.buttonStyle} onClick={ () => moveToEditPage() }  >

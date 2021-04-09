@@ -1,149 +1,320 @@
-import { Box, Button, Container, Grid, TextField, Typography } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useState, useEffect }  from 'react';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField'
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import PhotoCamera from '@material-ui/icons/PhotoCamera';
-import { storage } from '../../firebase/firebase';
+import Container from '@material-ui/core/Container';
+import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { CardMedia } from '@material-ui/core';
+import firebaseApp, {storage} from '../../firebase/firebase';
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        marginTop: theme.spacing(8),
-      },
+  root: {
+    marginTop: theme.spacing(4),
+  },
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(3),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },input: {
+    display: 'none',
+  },
+  media:{
+    height: 140,
+    margin:theme.spacing(2),
+  }
+}));
 
-      marginWhole: {
-          margin: theme.spacing(1),
-          padding: theme.spacing(1),
-      },
-      buttonStyle:{
-          width: theme.spacing(4),
-      },
-
-      input: {
-        display: 'none',
-      },
-      imageStyle:{
-          width: theme.spacing(28)
-      }
-
-  }));
+function updateUserData(sUserId, sUserName, sLocation, sAbout, sFollowers, sPhoneNumber,profilePic) {
+  firebaseApp.database().ref('users/' + sUserId).update({
+    username: sUserName,
+    // email: email,
+    phoneNumber: sPhoneNumber,
+    followers:sFollowers,
+    about:sAbout,
+    location:sLocation,
+    profilePic:profilePic,
+    uid:sUserId,
+  });
+}
 
 
+function createUserData( sUserName, sLocation, sAbout, sFollowers, sPhoneNumber,  sEmail, sPassword, profilePic) {
 
-const EditProfilePage = () => {
-    const classes = useStyles();
-    const allInputs = {imgUrl: ''}
-    const [imageAsFile, setImageAsFile] = useState('')
-    const [imageAsUrl, setImageAsUrl] = useState(allInputs)
+    firebaseApp.auth().createUserWithEmailAndPassword(sEmail, sPassword)
+      .then((userCredential) => {
+        // Signed in 
+        var userID = userCredential.user.uid;
+        firebaseApp.database().ref('users/' + userID).set({
+          username: sUserName,
+          email: sEmail,
+          password: sPassword,
+          phoneNumber: sPhoneNumber,
+          followers:sFollowers,
+          about:sAbout,
+          location:sLocation,
+          profilePic:profilePic,
+          uid:userID,
+        });        
+        // ...
+      })
+      .catch((error) => {
+        // var errorCode = error.code;
+        // var errorMessage = error.message;
+        // ..
+      });
+}
 
-    console.log(imageAsFile)
-    const handleImageAsFile = (e) => {
-         const image = e.target.files[0]
-         setImageAsFile(imageFile => (image))
-     }
-    
-     const handleFireBaseUpload = e => {
-        e.preventDefault()
+
+
+export default function EditProfilePage(props) {
+  const classes = useStyles();
+  const history = useHistory();
+  const location = useLocation();
+
+  //Image upload
+  const allInputs = {imgUrl: ''}
+  const [imageAsFile, setImageAsFile] = useState('')
+  const [imageAsUrl, setImageAsUrl] = useState(allInputs)
+  console.log(imageAsFile)
+  const handleImageAsFile = (e) => {
+       const image = e.target.files[0]
+       if(image){
+        setImageAsFile(imageFile => (image))
+       }
+   }
+ 
+
+
+  const [sPhoneNumber, setsPhoneNumber] = useState('');
+  const [sFollowers, setsFollowers] = useState('');
+  const [sAbout, setsAbout] = useState('');
+  const [sLocation, setsLocation] = useState('');
+  const [sUserName, setsUserName] = useState('');
+  const [sUserId, setsUserId] = useState('');
+  const [sAdd, setsAdd] = useState(false);
+  const [sEmail, setsEmail] = useState('');
+  const [sPassword, setsPassword] = useState('');
+  // const [sProfilePic, setsProfilePic] = useState(imageAsUrl.imgUrl);
+  
+
+
+
+    function handleSubmit(event) {
+      event.preventDefault();
+
       console.log('start of upload')
-      // async magic goes here...
       if(imageAsFile === '') {
         console.error(`not an image, the image file is a ${typeof(imageAsFile)}`)
       }
-      const uploadTask = storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
-      //initiates the firebase side uploading 
+      const uploadTask =  storage.ref(`/images/${imageAsFile.name}`).put(imageAsFile)
       uploadTask.on('state_changed', 
       (snapShot) => {
-        //takes a snap shot of the process as it is happening
         console.log(snapShot)
       }, (err) => {
-        //catches the errors
         console.log(err)
       }, () => {
-        // gets the functions from storage refences the image storage in firebase by the children
-        // gets the download url then sets the image from firebase as the value for the imgUrl key:
         storage.ref('images').child(imageAsFile.name).getDownloadURL()
-         .then(fireBaseUrl => {
-           setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
-         })
+        .then(fireBaseUrl => {
+          const profilePic  = fireBaseUrl;
+
+          setImageAsUrl(prevObject => ({...prevObject, imgUrl: fireBaseUrl}))
+          sAdd ? createUserData( sUserName, sLocation, sAbout, sFollowers, sPhoneNumber, sEmail, sPassword,profilePic) :
+          updateUserData(sUserId, sUserName, sLocation, sAbout, sFollowers, sPhoneNumber,profilePic);
+        })
       })
-      }
-  
 
-    return (
-        <Container maxWidth="sm" className={classes.root} >
-        <form onSubmit={handleFireBaseUpload}>
-            <Grid
-            container
-            direction="column"
-            justify="space-evenly"
-            alignItems="space-evenly"
-            className={classes.marginWhole}
-            >
+      
 
-            <Grid
-            container
-            direction="row"
-            justify="space-evenly"
-            alignItems="center"
-            className={classes.marginWhole}
-            >
-                <Typography>Upload Image</Typography>
-                
-                <Box>
-                  <input accept="image/*" className={classes.input} id="icon-button-file" type="file"     onChange={handleImageAsFile} />
-                      <label htmlFor="icon-button-file">
-                          <IconButton color="primary" aria-label="upload picture" component="span">
-                          <PhotoCamera />
-                          </IconButton>
-                      </label>
-                      {/* <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        className={classes.button}
-                      >
-                        Send </Button> */}
-                </Box>
+      history.push('/main/profile');
+      
+  }
 
+    useEffect(() => {
+        
+        const data = location.state.detail;
+        if(data){
+          setsAdd(false);
+          setsUserId(data.uid);
+          setsPhoneNumber(data.phoneNumber);
+          setsFollowers(data.followers);
+          setsAbout(data.about);
+          setsLocation(data.location);
+          setsUserName(data.username);
+          imageAsUrl.imgUrl ? setImageAsUrl(prevObject => ({...prevObject, imgUrl: imageAsUrl.imgUrl})) : setImageAsUrl(prevObject => ({...prevObject, imgUrl: data.profilePic})) ;
+          // setsProfilePic(imageAsUrl.imgUrl)  data.profilePic
+        }else{
+          setsAdd(true);
+        }
+    }, [location.state.detail,imageAsUrl.imgUrl ]);
+
+
+  return (
+    <Container component="main" maxWidth="xs" className={classes.root} >
+      <CssBaseline />
+      <div className={classes.paper}>
+        <Typography component="h4" variant="h4">
+        {
+          sAdd ? "Add " : "Edit "
+        } 
+        LocalGuides User
+        </Typography>
+        <form className={classes.form} onSubmit={handleSubmit}>
+          <Grid container spacing={2}>
+
+          {
+            sAdd ? <>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="email"
+                label="Email"
+                name="email"
+                value={sEmail}
+                onInput={ e=>setsEmail(e.target.value)}
+                autoComplete="email"
+              />
             </Grid>
-            {
-              imageAsUrl.imgUrl ? <Box  >
-              <img 
-              className={classes.imageStyle}
-              src={imageAsUrl.imgUrl} 
-              alt="upload profile" />
-          </Box>: null
-            }
-            <TextField
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
                 required
-                id="filled-required"
-                label="Name"
-                defaultValue="Muhammad Arsalan"
-                variant="filled"
-                className={classes.marginWhole}
-                />
-            <TextField
-                required
-                id="filled-required"
-                label="Description"
-                defaultValue="Arsalan is a Tourist who has visited many places in Pakistan."
-                variant="filled"
-                className={classes.marginWhole}
-                />
-            <Box
-            display="flex"
-            justifyContent="center"
-            alignContent="center"
-            >
-                <Button type="submit" variant="contained" color="primary" className={classes.buttonStyle}>
-                Save
+                fullWidth
+                id="password"
+                label="Password"
+                name="password"
+                value={sPassword}
+                onInput={ e=>setsPassword(e.target.value)}
+                autoComplete="password"
+              />
+            </Grid>
+            </>
+            : ''
+          }
+            <Grid item xs={12}>
+              <input
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleImageAsFile}
+              />
+              <label htmlFor="contained-button-file">
+                <Button variant="contained" color="primary" component="span">
+                  Upload
                 </Button>
-            </Box>
+              </label>
+            </Grid>
 
-        </Grid>
-            </form>
-        </Container>
-    );
-};
 
-export default EditProfilePage;
+            <Grid item xs={12}>
+              <CardMedia 
+              image={imageAsUrl.imgUrl}
+              className={classes.media}  
+              title="Contemplative Reptile" />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="username"
+                label="User Name"
+                name="username"
+                value={sUserName}
+                onInput={ e=>setsUserName(e.target.value)}
+                autoComplete="username"
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="phoneNumber"
+                label="Phone Number"
+                name="phoneNumber"
+                value={sPhoneNumber}
+                onInput={ e=>setsPhoneNumber(e.target.value)}
+                autoComplete="phoneNumber"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="followers"
+                label="Followers"
+                name="followers"
+                value={sFollowers}
+                onInput={ e=>setsFollowers(e.target.value)}
+                autoComplete="followers"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="location"
+                label="Located City"
+                name="location"
+                value={sLocation}
+                onInput={ e=>setsLocation(e.target.value)}
+                autoComplete="location"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                id="about"
+                label="About"
+                name="about"
+                value={sAbout}
+                onInput={ e=>setsAbout(e.target.value)}
+                autoComplete="about"
+              />
+            </Grid>
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            {
+              sAdd ? "Add" : "Save"
+            }
+          </Button>
+         
+        </form>
+      </div>
+    </Container>
+  );
+}
