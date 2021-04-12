@@ -64,7 +64,7 @@ export default function Register(props) {
         // Signed in 
         var userID = userCredential.user.uid;
         writeUserData(userID, username, email);
-        history.push('/main');
+        history.push('/');
         // ...
       })
       .catch((error) => {

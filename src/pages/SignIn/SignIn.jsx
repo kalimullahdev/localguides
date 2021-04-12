@@ -46,13 +46,12 @@ export default function Login(props) {
 
     function handleSubmit(event) {
       event.preventDefault();
-      console.log( 'Email:', email, 'Password: ', password);
       firebaseApp.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         // Signed in
         // var user = userCredential.user;
         
-        history.push('/main');
+        history.push('/');
         // ...
       })
       .catch((error) => {

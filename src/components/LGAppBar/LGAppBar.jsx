@@ -16,6 +16,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { useHistory } from 'react-router';
 import firebaseApp from '../../firebase/firebase';
+import Main from '../../pages/Main/Main';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -109,7 +110,8 @@ export default function LGAppBar() {
         history.push('/signin');
         break;
       case "profileMenuItem":
-        history.push('/main/profile');
+        history.push('/profile');
+        window.location.reload(false);
         break;
       default:
         console.log("NO Action");
@@ -244,6 +246,7 @@ export default function LGAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
+      <Main/>
     </div>
   );
 }

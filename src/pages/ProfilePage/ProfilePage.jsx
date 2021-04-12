@@ -57,7 +57,7 @@ const ProfilePage = () => {
             if (snapshot.exists()) {
               const lgUserData = snapshot.val();
               history.push({
-                pathname: '/main/editprofile',
+                pathname: '/editprofile',
                 state: { detail: lgUserData }
               })
             }

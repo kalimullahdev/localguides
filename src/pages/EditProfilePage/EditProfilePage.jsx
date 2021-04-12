@@ -142,7 +142,11 @@ export default function EditProfilePage(props) {
 
       
 
-      history.push('/main/profile');
+      history.push({
+        pathname: '/profile',
+        // search: '?query=abc',
+        state: { detail: "ProfilPage"}
+      });
       
   }
 

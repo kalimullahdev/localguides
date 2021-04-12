@@ -1,37 +1,49 @@
-import React from 'react';
-import LGAppBar from '../../components/LGAppBar/LGAppBar';
+import React,{useEffect} from 'react';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useHistory,
 } from "react-router-dom";
 import TrendingPost from '../TrendingPost/TrendingPost';
 import ProfilePage from '../ProfilePage/ProfilePage';
 import EditProfilePage from '../EditProfilePage/EditProfilePage';
 import SingleArticle from '../SingleArticle/SingleArticle';
+import firebaseApp from '../../firebase/firebase';
 
 
 function Main(){
+  const history = useHistory();
+
+  useEffect(() => {
+     firebaseApp.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        console.log("User is signed In");
+      } else {
+        console.log("No user is signed in.");
+        history.push('/slider');
+      }
+    });  
+  }, );
+
+
     return (
-        <>
-        <LGAppBar/>
           <Router>
             <Switch>
-              <Route path="/main/profile">
+              <Route exact path="/profile">
                 <ProfilePage/>
               </Route>
-              <Route path="/main/singleArticle">
+              <Route path="/singleArticle">
                 <SingleArticle/>
               </Route>
-            <Route path="/main/trendingPost">
+            <Route exact path="/">
               <TrendingPost/>
             </Route>
-            <Route path="/main/editprofile">
+            <Route path="/editprofile">
               <EditProfilePage/>
             </Route>
             </Switch>
           </Router>
-        </>
     );
 }
 
