@@ -14,6 +14,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { useHistory } from 'react-router';
+import firebaseApp from '../../firebase/firebase';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -81,6 +83,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function LGAppBar() {
   const classes = useStyles();
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -95,8 +98,22 @@ export default function LGAppBar() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+  const handleMenuClose = (e) => {
+    switch(e.target.id){
+      case "logoutMenuItem":
+        firebaseApp.auth().signOut().then(function() {
+          // Sign-out successful.
+        }).catch(function(error) {
+          // An error happened.
+        });
+        history.push('/signin');
+        break;
+      case "profileMenuItem":
+        history.push('/main/profile');
+        break;
+      default:
+        console.log("NO Action");
+    }
     handleMobileMenuClose();
   };
 
@@ -115,8 +132,8 @@ export default function LGAppBar() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem id="profileMenuItem" onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem id="logoutMenuItem"  onClick={handleMenuClose}>Logout</MenuItem>
     </Menu>
   );
 
