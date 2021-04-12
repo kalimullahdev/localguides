@@ -34,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
       userSelect:'none',
   },
   cardHeader: {
+    paddingTop:'0px',
     paddingBottom:'0px',
     userSelect:'none',
   },
@@ -55,6 +56,10 @@ const useStyles = makeStyles((theme) => ({
   avatar: {
     backgroundColor: red[500],
   },
+  marginAll:{
+    margin:theme.spacing(2),
+    fontWeight: 600,
+  }
 }));
 
 
@@ -95,6 +100,9 @@ export default function SinglePost(props) {
   return (
     <Card className={classes.root} key={id} onClick={()=> articleDetails({aid})} >
       <div className={classes.details}>
+      <Typography gutterBottom variant="p" className={classes.marginAll}  component="p"  >
+          {title}
+          </Typography>
       <CardHeader className={classes.cardHeader}
         avatar={
           <Avatar aria-label="recipe" src={sProfilePic} className={classes.avatar}/>
@@ -102,9 +110,6 @@ export default function SinglePost(props) {
         title={sUsername}
       />
       <CardContent className={classes.cardContent}>
-          <Typography gutterBottom variant="p" component="p"  >
-          {title}
-          </Typography>
           <Typography variant="body2" color="textSecondary" component="p" >
             {description}
           </Typography>

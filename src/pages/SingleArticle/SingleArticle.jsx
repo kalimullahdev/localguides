@@ -23,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
         display:'inline-block',
         margin: theme.spacing(2),
       },
+      articleTitleStyle:{
+        padding:theme.spacing(5),
+        fontWeight: 'bold',
+      }
   }));
   
 
@@ -53,14 +57,13 @@ export default function SingleArticle() {
 
     return (
         <Container maxWidth="md">
-            <Typography variant="h3" component="h1"> {sArticleTitle} </Typography>
+            <Typography variant="h5" className={classes.articleTitleStyle} component="h1"> {sArticleTitle} </Typography>
             <Grid
             container
             direction="row"
             justify="space-evenly"
             alignItems="center"
             >            
-            
             
             <Box>
             <Grid
