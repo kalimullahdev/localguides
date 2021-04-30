@@ -8,10 +8,14 @@ import { useLocation } from 'react-router-dom';
 const apiUrl = process.env.REACT_APP_API_URL;
 const apiKey = process.env.REACT_APP_API_KEY;
 
+
+
+
+
 const MyApp = () => {
   const searchTimeout = 1000;
   const llocation = useLocation();
-  const [location, setLocation] = React.useState('Karachi');
+  const [location, setLocation] = React.useState('');
   const [error, setError] = React.useState(null);
   const [forecast, setForecast] = React.useState([]);
   const [weather, setWeather] = React.useState({});

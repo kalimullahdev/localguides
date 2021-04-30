@@ -17,7 +17,6 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { useHistory } from 'react-router';
 import firebaseApp from '../../firebase/firebase';
 import Main from '../../pages/Main/Main';
-import Search from '../../weatherComponents/components/search';
 
 const useStyles = makeStyles((theme) => ({
   grow: {

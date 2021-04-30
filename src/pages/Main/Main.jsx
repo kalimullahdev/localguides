@@ -10,7 +10,7 @@ import ProfilePage from '../ProfilePage/ProfilePage';
 import EditProfilePage from '../EditProfilePage/EditProfilePage';
 import SingleArticle from '../SingleArticle/SingleArticle';
 import firebaseApp from '../../firebase/firebase';
-import MyApp from '../../weatherComponents/components/app';
+import SearchPlacePage from '../SearchPlacePage/SearchPlacePage';
 
 function Main(){
   const history = useHistory();
@@ -43,8 +43,7 @@ function Main(){
               <EditProfilePage/>
             </Route>
             <Route path="/searchedPlaced">
-              <MyApp/>
-              {/* <h1>Searched Place</h1> */}
+              <SearchPlacePage/>
             </Route>
             </Switch>
           </Router>
