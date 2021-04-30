@@ -14,8 +14,6 @@ import LGAppBar from './components/LGAppBar/LGAppBar';
 
 function App() {
 
-
-
   return (
     <div className="App">
       <div className="Routing">

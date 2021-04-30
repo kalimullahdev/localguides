@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -17,6 +17,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { useHistory } from 'react-router';
 import firebaseApp from '../../firebase/firebase';
 import Main from '../../pages/Main/Main';
+import Search from '../../weatherComponents/components/search';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -87,6 +88,7 @@ export default function LGAppBar() {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [SearchPlace, setSearchPlace] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -98,6 +100,27 @@ export default function LGAppBar() {
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
+
+  const handleNotifications = ()=> {
+      history.push({pathname: '/searchedPlaced',
+    });
+    window.location.reload(false); 
+  }
+
+  const handleSearchedPlace = (e) => {
+    if(e.keyCode === 13){
+      history.push({
+        pathname:'/searchedPlaced', state: SearchPlace,
+      });
+    window.location.reload(false);
+    } 
+
+  }
+
+  const handleSearchPlaceValueChange = (e) => {
+    setSearchPlace(e.target.value);
+
+  }
 
   const handleMenuClose = (e) => {
     switch(e.target.id){
@@ -195,18 +218,24 @@ export default function LGAppBar() {
           <Typography className={classes.title} variant="h6" noWrap>
             Local Guides
           </Typography>
+        
           <div className={classes.search}>
+            
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
             <InputBase
               placeholder="Search…"
+              onChange={handleSearchPlaceValueChange}
+              onKeyDown={handleSearchedPlace}
+              value={SearchPlace}
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
               inputProps={{ 'aria-label': 'search' }}
             />
+            
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
@@ -215,7 +244,9 @@ export default function LGAppBar() {
                 <MailIcon />
               </Badge>
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton aria-label="show 17 new notifications" color="inherit"
+              onClick={handleNotifications}
+              >
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
