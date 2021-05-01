@@ -101,9 +101,7 @@ export default function LGAppBar() {
   };
 
   const handleNotifications = ()=> {
-      history.push({pathname: '/searchedPlaced',
-    });
-    window.location.reload(false); 
+    
   }
 
   const handleSearchedPlace = (e) => {
