@@ -11,6 +11,7 @@ import EditProfilePage from '../EditProfilePage/EditProfilePage';
 import SingleArticle from '../SingleArticle/SingleArticle';
 import firebaseApp from '../../firebase/firebase';
 import SearchPlacePage from '../SearchPlacePage/SearchPlacePage';
+import  MapContainer from '../GoogleMaps/MapContainer';
 
 function Main(){
   const history = useHistory();
@@ -41,6 +42,9 @@ function Main(){
             </Route>
             <Route path="/editprofile">
               <EditProfilePage/>
+            </Route>
+            <Route path="/googleMaps">
+              <MapContainer/>
             </Route>
             <Route path="/searchedPlaced">
               <SearchPlacePage/>

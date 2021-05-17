@@ -17,6 +17,8 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { useHistory } from 'react-router';
 import firebaseApp from '../../firebase/firebase';
 import Main from '../../pages/Main/Main';
+import { MapRounded } from '@material-ui/icons';
+import { Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -26,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
+    color: 'white',
     display: 'none',
     [theme.breakpoints.up('sm')]: {
       display: 'block',
@@ -103,6 +106,20 @@ export default function LGAppBar() {
   const handleNotifications = ()=> {
     
   }
+  const handleLogoClick = ()=> {
+    history.push({
+      pathname:'/', state: SearchPlace,
+    });
+    window.location.reload(false);
+  }
+
+  const handleMaps = ()=> {
+    history.push({
+      pathname:'/googleMaps', state: SearchPlace,
+    });
+    window.location.reload(false);
+  }
+
 
   const handleSearchedPlace = (e) => {
     if(e.keyCode === 13){
@@ -212,9 +229,12 @@ export default function LGAppBar() {
           >
             <MenuIcon />
           </IconButton>
+          <Button 
+          onClick={handleLogoClick}>
           <Typography className={classes.title} variant="h6" noWrap>
             Local Guides
           </Typography>
+          </Button>
         
           <div className={classes.search}>
             
@@ -236,10 +256,11 @@ export default function LGAppBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
+            <IconButton aria-label="show 4 new mails" color="inherit"
+            
+              onClick={handleMaps}
+            >
+                <MapRounded/>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit"
               onClick={handleNotifications}
