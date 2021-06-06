@@ -12,6 +12,7 @@ import SingleArticle from '../SingleArticle/SingleArticle';
 import firebaseApp from '../../firebase/firebase';
 import SearchPlacePage from '../SearchPlacePage/SearchPlacePage';
 import  MapContainer from '../GoogleMaps/MapContainer';
+import Chats from '../../modules/chats/Chats';
 
 function Main(){
   const history = useHistory();
@@ -48,6 +49,9 @@ function Main(){
             </Route>
             <Route path="/searchedPlaced">
               <SearchPlacePage/>
+            </Route>
+            <Route path="/chats">
+              <Chats/>
             </Route>
             </Switch>
           </Router>

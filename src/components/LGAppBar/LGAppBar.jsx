@@ -12,7 +12,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import ChatIcon from '@material-ui/icons/Chat';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { useHistory } from 'react-router';
 import firebaseApp from '../../firebase/firebase';
@@ -103,8 +103,11 @@ export default function LGAppBar() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleNotifications = ()=> {
-    
+  const handleChatClick = ()=> {
+    history.push({
+      pathname:'/chats',
+    });
+    window.location.reload(false);
   }
   const handleLogoClick = ()=> {
     history.push({
@@ -198,7 +201,7 @@ export default function LGAppBar() {
       <MenuItem>
         <IconButton aria-label="show 11 new notifications" color="inherit">
           <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
+            <ChatIcon />
           </Badge>
         </IconButton>
         <p>Notifications</p>
@@ -263,10 +266,10 @@ export default function LGAppBar() {
                 <MapRounded/>
             </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit"
-              onClick={handleNotifications}
+              onClick={handleChatClick}
               >
               <Badge badgeContent={17} color="secondary">
-                <NotificationsIcon />
+                <ChatIcon />
               </Badge>
             </IconButton>
             <IconButton
