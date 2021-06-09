@@ -13,6 +13,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useLocation } from "react-router-dom";
 import firebaseApp from "../../firebase/firebase";
 import SingleComment from "../../components/SingleComment/SingleComment";
+import {
+    FacebookShareButton,
+  } from "react-share";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -163,18 +166,20 @@ export default function SingleArticle() {
               </Grid>
             </Box>
             </Container>
-            {/* <Button
-              size="small"
-              color="primary"
-              variant="contained"
-              className={classes.marginAll}
-            >
-              Follow
-            </Button> */}
+            <FacebookShareButton 
+             quote="Visit the newly lunched Tourism LocalGuide(WebApp)"
+             url="www.localguides.com"
+             >
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.marginAll}
+              >
+                Share
+              </Button>
+            </FacebookShareButton>
           </Grid>
         </Box>
-
-        {/* <Typography>Share</Typography> */}
       </Grid>
 
       <Container maxWidth="sm">
