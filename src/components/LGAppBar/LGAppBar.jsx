@@ -1,23 +1,25 @@
-import React,{useState} from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
-import ChatIcon from '@material-ui/icons/Chat';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import { useHistory } from 'react-router';
-import firebaseApp from '../../firebase/firebase';
-import Main from '../../pages/Main/Main';
-import { MapRounded } from '@material-ui/icons';
-import { Button } from '@material-ui/core';
+import React, { useState } from "react";
+import { fade, makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Typography from "@material-ui/core/Typography";
+import InputBase from "@material-ui/core/InputBase";
+import Badge from "@material-ui/core/Badge";
+import MenuItem from "@material-ui/core/MenuItem";
+import Menu from "@material-ui/core/Menu";
+import SearchIcon from "@material-ui/icons/Search";
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import MailIcon from "@material-ui/icons/Mail";
+import ChatIcon from "@material-ui/icons/Chat";
+import MoreIcon from "@material-ui/icons/MoreVert";
+import { useHistory } from "react-router";
+import firebaseApp from "../../firebase/firebase";
+import Main from "../../pages/Main/Main";
+import { MapRounded } from "@material-ui/icons";
+import { Button } from "@material-ui/core";
+// import { Avatar } from "@material-ui/core";
+// import logo from "../../assets/images/logo.png";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -27,59 +29,59 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    color: 'white',
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
+    color: "white",
+    display: "none",
+    [theme.breakpoints.up("sm")]: {
+      display: "block",
     },
   },
   search: {
-    position: 'relative',
+    position: "relative",
     borderRadius: theme.shape.borderRadius,
     backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
+    "&:hover": {
       backgroundColor: fade(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
       marginLeft: theme.spacing(3),
-      width: 'auto',
+      width: "auto",
     },
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   inputRoot: {
-    color: 'inherit',
+    color: "inherit",
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
     },
   },
   sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex',
+    display: "none",
+    [theme.breakpoints.up("md")]: {
+      display: "flex",
     },
   },
   sectionMobile: {
-    display: 'flex',
-    [theme.breakpoints.up('md')]: {
-      display: 'none',
+    display: "flex",
+    [theme.breakpoints.up("md")]: {
+      display: "none",
     },
   },
 }));
@@ -102,54 +104,58 @@ export default function LGAppBar() {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleChatClick = ()=> {
+  const handleChatClick = () => {
     history.push({
-      pathname:'/chats',
+      pathname: "/chats",
     });
     window.location.reload(false);
-  }
-  const handleLogoClick = ()=> {
+  };
+  const handleLogoClick = () => {
     history.push({
-      pathname:'/', state: SearchPlace,
+      pathname: "/",
+      state: SearchPlace,
     });
     window.location.reload(false);
-  }
+  };
 
-  const handleMaps = ()=> {
+  const handleMaps = () => {
     history.push({
-      pathname:'/googleMaps', state: SearchPlace,
+      pathname: "/googleMaps",
+      state: SearchPlace,
     });
     window.location.reload(false);
-  }
-
+  };
 
   const handleSearchedPlace = (e) => {
-    if(e.keyCode === 13){
+    if (e.keyCode === 13) {
       history.push({
-        pathname:'/searchedPlaced', state: SearchPlace,
+        pathname: "/searchedPlaced",
+        state: SearchPlace,
       });
-    window.location.reload(false);
-    } 
-
-  }
+      window.location.reload(false);
+    }
+  };
 
   const handleSearchPlaceValueChange = (e) => {
     setSearchPlace(e.target.value);
-
-  }
+  };
 
   const handleMenuClose = (e) => {
-    switch(e.target.id){
+    switch (e.target.id) {
       case "logoutMenuItem":
-        firebaseApp.auth().signOut().then(function() {
-          // Sign-out successful.
-        }).catch(function(error) {
-          // An error happened.
-        });
-        history.push('/signin');
+        firebaseApp
+          .auth()
+          .signOut()
+          .then(function () {
+            // Sign-out successful.
+          })
+          .catch(function (error) {
+            // An error happened.
+          });
+        history.push("/signin");
         break;
       case "profileMenuItem":
-        history.push('/profile');
+        history.push("/profile");
         window.location.reload(false);
         break;
       default:
@@ -162,34 +168,38 @@ export default function LGAppBar() {
     setMobileMoreAnchorEl(event.currentTarget);
   };
 
-  const menuId = 'primary-search-account-menu';
+  const menuId = "primary-search-account-menu";
   const renderMenu = (
     <Menu
       anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={menuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem id="profileMenuItem" onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem id="logoutMenuItem"  onClick={handleMenuClose}>Logout</MenuItem>
+      <MenuItem id="profileMenuItem" onClick={handleMenuClose}>
+        Profile
+      </MenuItem>
+      <MenuItem id="logoutMenuItem" onClick={handleMenuClose}>
+        Logout
+      </MenuItem>
     </Menu>
   );
 
-  const mobileMenuId = 'primary-search-account-menu-mobile';
+  const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
       anchorEl={mobileMoreAnchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      anchorOrigin={{ vertical: "top", horizontal: "right" }}
       id={mobileMenuId}
       keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      transformOrigin={{ vertical: "top", horizontal: "right" }}
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem onClick={handleChatClick} >
+      <MenuItem onClick={handleChatClick}>
         <IconButton aria-label="show 4 new mails" color="inherit">
           <Badge color="secondary">
             <MailIcon />
@@ -197,15 +207,7 @@ export default function LGAppBar() {
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem  onClick={handleMaps}  >
-        <IconButton color="inherit">
-          <Badge color="secondary">
-            <ChatIcon />
-          </Badge>
-        </IconButton>
-        <p>Maps</p>
-      </MenuItem>
-      <MenuItem  onClick={handleMaps}  >
+      <MenuItem onClick={handleMaps}>
         <IconButton color="inherit">
           <Badge color="secondary">
             <ChatIcon />
@@ -229,7 +231,7 @@ export default function LGAppBar() {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar>
           {/* <IconButton
             edge="start"
@@ -239,15 +241,16 @@ export default function LGAppBar() {
           >
             <MenuIcon />
           </IconButton> */}
-          <Button 
-          onClick={handleLogoClick}>
-          <Typography className={classes.title} variant="h6" noWrap>
-            Local Guides
-          </Typography>
+          <Button onClick={handleLogoClick}>
+            {/* <Avatar
+                  src={logo}
+                /> */}
+            <Typography className={classes.title} variant="h6" noWrap>
+              Local Guides
+            </Typography>
           </Button>
-        
+
           <div className={classes.search}>
-            
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -260,22 +263,24 @@ export default function LGAppBar() {
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ "aria-label": "search" }}
             />
-            
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 4 new mails" color="inherit"
-            
+            <IconButton
+              aria-label="show 4 new mails"
+              color="inherit"
               onClick={handleMaps}
             >
-                <MapRounded/>
+              <MapRounded />
             </IconButton>
-            <IconButton aria-label="show 17 new notifications" color="inherit"
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
               onClick={handleChatClick}
-              >
-              <Badge  color="secondary">
+            >
+              <Badge color="secondary">
                 <ChatIcon />
               </Badge>
             </IconButton>
@@ -305,7 +310,7 @@ export default function LGAppBar() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-      <Main/>
+      <Main />
     </div>
   );
 }
