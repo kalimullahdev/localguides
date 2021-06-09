@@ -8,7 +8,6 @@ import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
@@ -190,21 +189,29 @@ export default function LGAppBar() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      <MenuItem onClick={handleChatClick} >
         <IconButton aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="secondary">
+          <Badge color="secondary">
             <MailIcon />
           </Badge>
         </IconButton>
         <p>Messages</p>
       </MenuItem>
-      <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
+      <MenuItem  onClick={handleMaps}  >
+        <IconButton color="inherit">
+          <Badge color="secondary">
             <ChatIcon />
           </Badge>
         </IconButton>
-        <p>Notifications</p>
+        <p>Maps</p>
+      </MenuItem>
+      <MenuItem  onClick={handleMaps}  >
+        <IconButton color="inherit">
+          <Badge color="secondary">
+            <ChatIcon />
+          </Badge>
+        </IconButton>
+        <p>Maps</p>
       </MenuItem>
       <MenuItem onClick={handleProfileMenuOpen}>
         <IconButton
@@ -224,14 +231,14 @@ export default function LGAppBar() {
     <div className={classes.grow}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton
+          {/* <IconButton
             edge="start"
             className={classes.menuButton}
             color="inherit"
             aria-label="open drawer"
           >
             <MenuIcon />
-          </IconButton>
+          </IconButton> */}
           <Button 
           onClick={handleLogoClick}>
           <Typography className={classes.title} variant="h6" noWrap>

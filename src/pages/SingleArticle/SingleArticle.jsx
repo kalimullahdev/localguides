@@ -23,8 +23,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   avatar: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
+    width: theme.spacing(12),
+    height: theme.spacing(12),
   },
   marginAll: {
     margin: theme.spacing(1),
