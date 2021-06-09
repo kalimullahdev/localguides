@@ -13,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
 import { useLocation } from "react-router-dom";
 import firebaseApp from "../../firebase/firebase";
+import SingleComment from "../../components/SingleComment/SingleComment";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -51,11 +52,24 @@ export default function SingleArticle() {
   const [sArticleId, setsArticleId] = useState("");
   const [sUserId, setsUserId] = useState("");
 
+  const [commentsList, setCommentsList] = useState([]);
+
+  function getComments(aid){
+    var articlesRef = firebaseApp.database().ref('articles/' + aid + "/comments/");
+      articlesRef.on('value', (snapshot) => {
+        const data = snapshot.val();
+        const listOfComments = [];
+        for(let cid in data){
+          listOfComments.push({cid,...data[cid]})
+        }
+        setCommentsList(listOfComments);
+      });
+  }
+
+
   function handleSubmit(event) {
     event.preventDefault();
-    console.log("Comment is "+ sComment);
-    
-    console.log("Article ID is: "+ sArticleId);
+    setsComment("");
     DoComment(sUserId, sArticleId, sComment);
   }
 
@@ -70,8 +84,6 @@ export default function SingleArticle() {
 
   useEffect(() => {
 
-
-
     firebaseApp
       .database()
       .ref("articles")
@@ -82,7 +94,7 @@ export default function SingleArticle() {
           
           setsArticleId(location.state.detail);
           const data = snapshot.val();
-          setsUserId(data.uid);
+          setsUserId(firebaseApp.auth().currentUser.uid);
           setsArticleTitle(data.title);
           setsArticleContent(data.articleContent);
           setsArticlePicture(data.articlePic);
@@ -93,6 +105,7 @@ export default function SingleArticle() {
       .catch(function (error) {
         console.error(error);
       });
+      getComments(location.state.detail);
   }, [location.state.detail]);
 
   return (
@@ -187,6 +200,14 @@ export default function SingleArticle() {
             COMMENT
           </Button>
         </form>
+        <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center"
+            py={3} alignContent="center" alignItems="center">
+                {
+                    commentsList ? commentsList.map((row) => (
+                        <SingleComment  postData={row}  />
+                    )) : 'No Comment'  
+                }
+            </Box>
       </Container>
       <Box mb={8} />
     </Container>
