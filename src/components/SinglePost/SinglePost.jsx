@@ -91,7 +91,10 @@ export default function SinglePost(props) {
   function articleDetails({aid}){
     history.push({
       pathname: '/singleArticle',
-      state: { detail: aid }
+      state:  {
+        aid: aid,
+        userId: uid,
+      } 
     });
   }
   

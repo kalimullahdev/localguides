@@ -10,7 +10,6 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { red } from "@material-ui/core/colors";
 import { useLocation } from "react-router-dom";
 import firebaseApp from "../../firebase/firebase";
 import SingleComment from "../../components/SingleComment/SingleComment";
@@ -21,7 +20,8 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
   },
   avatar: {
-    backgroundColor: red[500],
+    width: theme.spacing(7),
+    height: theme.spacing(7),
   },
   marginAll: {
     margin: theme.spacing(1),
@@ -34,10 +34,12 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     height: theme.spacing(40),
     display: "inline-block",
-    margin: theme.spacing(2),
+    marginBlock: theme.spacing(2),
   },
   articleTitleStyle: {
-    padding: theme.spacing(5),
+    paddingInline: theme.spacing(5),
+    paddingBottom: theme.spacing(2),
+    paddingTop: theme.spacing(2),
     fontWeight: "bold",
   },
 }));
@@ -51,6 +53,9 @@ export default function SingleArticle() {
   const [sComment, setsComment] = useState("");
   const [sArticleId, setsArticleId] = useState("");
   const [sUserId, setsUserId] = useState("");
+  const [sUserName, setsUserName] = useState("");
+  const [sProfilePic, setsProfilePic] = useState("");
+
 
   const [commentsList, setCommentsList] = useState([]);
 
@@ -87,17 +92,30 @@ export default function SingleArticle() {
     firebaseApp
       .database()
       .ref("articles")
-      .child(location.state.detail)
+      .child(location.state.aid)
       .get()
       .then(function (snapshot) {
         if (snapshot.exists()) {
           
-          setsArticleId(location.state.detail);
+          setsArticleId(location.state.aid);
           const data = snapshot.val();
-          setsUserId(firebaseApp.auth().currentUser.uid);
+          setsUserId(location.state.userId);
           setsArticleTitle(data.title);
           setsArticleContent(data.articleContent);
           setsArticlePicture(data.articlePic);
+          firebaseApp.database().ref("users").child(location.state.userId).get().then(function(snapshot) {
+            if (snapshot.exists()) {
+              const data = snapshot.val();
+              console.log(data.username);
+              setsProfilePic(data.profilePic);
+              setsUserName(data.username);
+            }
+            else {
+              console.log("No data available");
+            }
+          }).catch(function(error) {
+            console.error(error);
+          }); 
         } else {
           console.log("No data available");
         }
@@ -105,18 +123,18 @@ export default function SingleArticle() {
       .catch(function (error) {
         console.error(error);
       });
-      getComments(location.state.detail);
-  }, [location.state.detail]);
+      getComments(location.state.aid);
+  }, [location.state]);
+
 
   return (
     <Container maxWidth="md">
       <Typography
-        variant="h5"
+        variant="h4"
         className={classes.articleTitleStyle}
         component="h1"
       >
-        {" "}
-        {sArticleTitle}{" "}
+        {sArticleTitle}
       </Typography>
       <Grid
         container
@@ -126,11 +144,10 @@ export default function SingleArticle() {
       >
         <Box>
           <Grid container direction="row" justify="center" alignItems="center">
-            <Avatar aria-label="recipe" className={classes.avatar}>
-              R
-            </Avatar>
+            <Avatar aria-label="recipe" className={classes.avatar} src={sProfilePic} />
 
-            <Box className={classes.marginAll}>
+            <Container>
+            <Box className={classes.marginAll} >
               <Grid
                 container
                 direction="column"
@@ -138,25 +155,26 @@ export default function SingleArticle() {
                 alignItems="center"
               >
                 <Typography variant="subtitle1" component="span">
-                  Business Insider
+                  {sUserName}
                 </Typography>
                 <Typography variant="subtitle2" component="span">
                   Feb 13 2021
                 </Typography>
               </Grid>
             </Box>
-            <Button
+            </Container>
+            {/* <Button
               size="small"
               color="primary"
               variant="contained"
               className={classes.marginAll}
             >
               Follow
-            </Button>
+            </Button> */}
           </Grid>
         </Box>
 
-        <Typography>Share</Typography>
+        {/* <Typography>Share</Typography> */}
       </Grid>
 
       <Container maxWidth="sm">
