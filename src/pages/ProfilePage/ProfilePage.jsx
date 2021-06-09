@@ -157,7 +157,8 @@ const ProfilePage = () => {
                 >
                     <Button variant="contained" color="primary" className={classes.buttonStyle}>
                     Follow
-                    </Button><Button variant="contained" color="primary" className={classes.buttonStyle}>
+                    </Button>
+                    <Button variant="contained" color="primary" className={classes.buttonStyle}>
                     Share
                     </Button>
                 </Box>
