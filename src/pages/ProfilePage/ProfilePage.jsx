@@ -112,7 +112,7 @@ const ProfilePage = () => {
               articleRef.on("value", (snapshot) => {
                 const articleData = snapshot.val();
                 if (articleData.uid === user.uid) {
-                  currentUserArticles.push(articleData);
+                  currentUserArticles.push({aid,...articleData});
                 }
               });
             }
