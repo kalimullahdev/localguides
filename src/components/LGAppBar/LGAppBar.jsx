@@ -16,10 +16,12 @@ import MoreIcon from "@material-ui/icons/MoreVert";
 import { useHistory } from "react-router";
 import firebaseApp from "../../firebase/firebase";
 import Main from "../../pages/Main/Main";
-import { MapRounded } from "@material-ui/icons";
+import {
+  MapRounded,
+} from "@material-ui/icons";
+import AddIcon from "@material-ui/icons/Add";
+
 import { Button } from "@material-ui/core";
-// import { Avatar } from "@material-ui/core";
-// import logo from "../../assets/images/logo.png";
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -125,6 +127,14 @@ export default function LGAppBar() {
     });
     window.location.reload(false);
   };
+
+  const handleAddArticle = () => {
+    history.push({
+      pathname: "/addNewArticle",
+    });
+    window.location.reload(false);
+  };
+  
 
   const handleSearchedPlace = (e) => {
     if (e.keyCode === 13) {
@@ -233,18 +243,7 @@ export default function LGAppBar() {
     <div className={classes.grow}>
       <AppBar position="sticky">
         <Toolbar>
-          {/* <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton> */}
           <Button onClick={handleLogoClick}>
-            {/* <Avatar
-                  src={logo}
-                /> */}
             <Typography className={classes.title} variant="h6" noWrap>
               Local Guides
             </Typography>
@@ -268,6 +267,13 @@ export default function LGAppBar() {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+          <IconButton
+              aria-label="show 4 new mails"
+              color="inherit"
+              onClick={handleAddArticle}
+            >
+              <AddIcon />
+            </IconButton>
             <IconButton
               aria-label="show 4 new mails"
               color="inherit"
