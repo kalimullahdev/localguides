@@ -12,10 +12,7 @@ import ArticlesInProfile from "../../components/ArticlesInProfile/ArticlesInProf
 import { useHistory } from "react-router-dom";
 import firebaseApp from "../../firebase/firebase";
 import {
-//   EmailShareButton,
   FacebookShareButton,
-//   TwitterShareButton,
-//   WhatsappShareButton,
 } from "react-share";
 
 const useStyles = makeStyles((theme) => ({
@@ -55,7 +52,6 @@ const ProfilePage = () => {
   const [sUsername, setsUsername] = useState("");
   const [sProfilePic, setsProfilePic] = useState("");
   const [sAbout, setsAbout] = useState("");
-  const [sFollowers, setsFollowers] = useState("");
   const [sCurrentUserArticles, setsCurrentUserArticles] = useState([]);
   const [sUid, setsUid] = useState("");
 
@@ -96,7 +92,6 @@ const ProfilePage = () => {
           setsUsername(data.username);
           setsProfilePic(data.profilePic);
           setsAbout(data.about);
-          setsFollowers(data.followers);
           setsUid(data.uid);
 
           // Get All Articles of That Users
@@ -112,7 +107,7 @@ const ProfilePage = () => {
               articleRef.on("value", (snapshot) => {
                 const articleData = snapshot.val();
                 if (articleData.uid === user.uid) {
-                  currentUserArticles.push({aid,...articleData});
+                  currentUserArticles.push({ aid, ...articleData });
                 }
               });
             }
@@ -140,38 +135,26 @@ const ProfilePage = () => {
           flexDirection="column"
           className={classes.marginPadding}
         >
-          <Box display="flex" flexDirection="row">
-            <Typography className={classes.nameStyle}>{sUsername}</Typography>
-            <Typography className={classes.horizantalMargin}>
-              {sFollowers} followers
-            </Typography>
-
-            <Button
-              color="primary"
-              variant="contained"
-              className={classes.buttonStyle}
-              onClick={() => moveToEditPage()}
-            >
-              Edit
-            </Button>
-          </Box>
+          <Typography className={classes.nameStyle}>{sUsername}</Typography>
 
           <Typography variant="subtitle1">{sAbout}</Typography>
         </Box>
 
         <Box display="flex" flexDirection="column">
+
           <Button
-            variant="contained"
             color="primary"
+            variant="contained"
             className={classes.buttonStyle}
+            onClick={() => moveToEditPage()}
           >
-            Follow
+            Edit
           </Button>
           <Box>
-            <FacebookShareButton 
-             quote="Visit the newly lunched Tourism LocalGuide(WebApp)"
-             url="www.localguides.com"
-             >
+            <FacebookShareButton
+              quote="Visit the newly lunched Tourism LocalGuide(WebApp)"
+              url="www.localguides.com"
+            >
               <Button
                 variant="contained"
                 color="primary"
@@ -191,8 +174,8 @@ const ProfilePage = () => {
       >
         {sCurrentUserArticles
           ? sCurrentUserArticles.map((article) => (
-              <ArticlesInProfile article={article} />
-            ))
+            <ArticlesInProfile article={article} />
+          ))
           : ""}
       </Grid>
     </Container>

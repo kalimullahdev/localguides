@@ -67,7 +67,7 @@ export default function EditArticle() {
         <Container>
             <Container
                 className={classes.marginAll}>
-                <Typography variant="h3" component="h2">
+                <Typography variant="h4" component="h2">
                     Edit Article
                 </Typography>
                 <Button
@@ -101,9 +101,8 @@ export default function EditArticle() {
                         'insertdatetime media table paste wordcount'
                     ],
                     toolbar:
-                        'undo redo | formatselect | bold italic | \
-                        alignleft aligncenter alignright | \
-                        bullist numlist outdent indent | help'
+                        'undo redo | formatselect | bold italic | alignleft aligncenter alignright | bullist numlist outdent indent | help'
+
                 }}
             />
         </Container>
