@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import firebaseApp from "../../firebase/firebase";
 import SingleComment from "../../components/SingleComment/SingleComment";
 import {
@@ -58,8 +58,8 @@ export default function SingleArticle() {
   const [sUserId, setsUserId] = useState("");
   const [sUserName, setsUserName] = useState("");
   const [sProfilePic, setsProfilePic] = useState("");
-
-
+  const [sShowButton, setsShowButton] = useState(false);
+  const history = useHistory();
   const [commentsList, setCommentsList] = useState([]);
 
   function getComments(aid){
@@ -88,10 +88,9 @@ export default function SingleArticle() {
       description : description,
     });
   }
-
-
+  
   useEffect(() => {
-
+    setsUserId(location.state.userId);
     firebaseApp
       .database()
       .ref("articles")
@@ -99,17 +98,14 @@ export default function SingleArticle() {
       .get()
       .then(function (snapshot) {
         if (snapshot.exists()) {
-          
           setsArticleId(location.state.aid);
           const data = snapshot.val();
-          setsUserId(location.state.userId);
           setsArticleTitle(data.title);
           setsArticleContent(data.articleContent);
           setsArticlePicture(data.articlePic);
           firebaseApp.database().ref("users").child(location.state.userId).get().then(function(snapshot) {
             if (snapshot.exists()) {
               const data = snapshot.val();
-              console.log(data.username);
               setsProfilePic(data.profilePic);
               setsUserName(data.username);
             }
@@ -129,6 +125,41 @@ export default function SingleArticle() {
       getComments(location.state.aid);
   }, [location.state]);
 
+
+  useEffect(() => {
+    if(location.state.userId === firebaseApp.auth().currentUser.uid){
+      setsShowButton(true);
+    }else{
+      setsShowButton(false);
+    }
+  }, [location.state]);
+  
+  function editArticle() {
+    history.push({
+      pathname: "/editArticlePage",
+      state: { detail: "lgUserData" },
+    });
+
+    // firebaseApp
+    //   .database()
+    //   .ref("users/")
+    //   .child(sUid)
+    //   .get()
+    //   .then(function (snapshot) {
+    //     if (snapshot.exists()) {
+    //       const lgUserData = snapshot.val();
+    //       history.push({
+    //         pathname: "/editprofile",
+    //         state: { detail: lgUserData },
+    //       });
+    //     } else {
+    //       console.log("No data available");
+    //     }
+    //   })
+    //   .catch(function (error) {
+    //     console.error(error);
+    //   });
+  }
 
   return (
     <Container maxWidth="md">
@@ -166,6 +197,16 @@ export default function SingleArticle() {
               </Grid>
             </Box>
             </Container>
+            {
+              sShowButton ? <Button
+              variant="contained"
+              color="primary"
+              className={classes.marginAll}
+              onClick={() => editArticle()}
+            >
+              Edit
+            </Button> : <Container/>
+            }
             <FacebookShareButton 
              quote="Visit the newly lunched Tourism LocalGuide(WebApp)"
              url="www.localguides.com"

@@ -13,10 +13,10 @@ import firebaseApp from '../../firebase/firebase';
 import SearchPlacePage from '../SearchPlacePage/SearchPlacePage';
 import  MapContainer from '../GoogleMaps/MapContainer';
 import Chats from '../../modules/chats/Chats';
+import EditArticle from '../EditArticle/EditArticle';
 
 function Main(){
   const history = useHistory();
-
   useEffect(() => {
      firebaseApp.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -40,6 +40,9 @@ function Main(){
               </Route>
             <Route exact path="/">
               <TrendingPost/>
+            </Route>
+            <Route exact path="/editArticlePage">
+              <EditArticle/>
             </Route>
             <Route path="/editprofile">
               <EditProfilePage/>
