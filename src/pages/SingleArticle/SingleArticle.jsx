@@ -14,8 +14,9 @@ import { useHistory, useLocation } from "react-router-dom";
 import firebaseApp from "../../firebase/firebase";
 import SingleComment from "../../components/SingleComment/SingleComment";
 import {
-    FacebookShareButton,
-  } from "react-share";
+  FacebookShareButton,
+} from "react-share";
+import ReactHtmlParser from 'react-html-parser';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,16 +63,16 @@ export default function SingleArticle() {
   const history = useHistory();
   const [commentsList, setCommentsList] = useState([]);
 
-  function getComments(aid){
+  function getComments(aid) {
     var articlesRef = firebaseApp.database().ref('articles/' + aid + "/comments/");
-      articlesRef.on('value', (snapshot) => {
-        const data = snapshot.val();
-        const listOfComments = [];
-        for(let cid in data){
-          listOfComments.push({cid,...data[cid]})
-        }
-        setCommentsList(listOfComments);
-      });
+    articlesRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      const listOfComments = [];
+      for (let cid in data) {
+        listOfComments.push({ cid, ...data[cid] })
+      }
+      setCommentsList(listOfComments);
+    });
   }
 
 
@@ -85,10 +86,10 @@ export default function SingleArticle() {
   function DoComment(userId, aid, description) {
     firebaseApp.database().ref('articles/' + aid + "/comments/").push().set({
       userId: userId,
-      description : description,
+      description: description,
     });
   }
-  
+
   useEffect(() => {
     setsUserId(location.state.userId);
     firebaseApp
@@ -103,7 +104,7 @@ export default function SingleArticle() {
           setsArticleTitle(data.title);
           setsArticleContent(data.articleContent);
           setsArticlePicture(data.articlePic);
-          firebaseApp.database().ref("users").child(location.state.userId).get().then(function(snapshot) {
+          firebaseApp.database().ref("users").child(location.state.userId).get().then(function (snapshot) {
             if (snapshot.exists()) {
               const data = snapshot.val();
               setsProfilePic(data.profilePic);
@@ -112,9 +113,9 @@ export default function SingleArticle() {
             else {
               console.log("No data available");
             }
-          }).catch(function(error) {
+          }).catch(function (error) {
             console.error(error);
-          }); 
+          });
         } else {
           console.log("No data available");
         }
@@ -122,43 +123,23 @@ export default function SingleArticle() {
       .catch(function (error) {
         console.error(error);
       });
-      getComments(location.state.aid);
+    getComments(location.state.aid);
   }, [location.state]);
 
 
   useEffect(() => {
-    if(location.state.userId === firebaseApp.auth().currentUser.uid){
+    if (location.state.userId === firebaseApp.auth().currentUser.uid) {
       setsShowButton(true);
-    }else{
+    } else {
       setsShowButton(false);
     }
   }, [location.state]);
-  
+
   function editArticle() {
     history.push({
       pathname: "/editArticlePage",
-      state: { detail: "lgUserData" },
+      state: { aid: sArticleId },
     });
-
-    // firebaseApp
-    //   .database()
-    //   .ref("users/")
-    //   .child(sUid)
-    //   .get()
-    //   .then(function (snapshot) {
-    //     if (snapshot.exists()) {
-    //       const lgUserData = snapshot.val();
-    //       history.push({
-    //         pathname: "/editprofile",
-    //         state: { detail: lgUserData },
-    //       });
-    //     } else {
-    //       console.log("No data available");
-    //     }
-    //   })
-    //   .catch(function (error) {
-    //     console.error(error);
-    //   });
   }
 
   return (
@@ -181,36 +162,36 @@ export default function SingleArticle() {
             <Avatar aria-label="recipe" className={classes.avatar} src={sProfilePic} />
 
             <Container>
-            <Box className={classes.marginAll} >
-              <Grid
-                container
-                direction="column"
-                justify="flex-start"
-                alignItems="center"
-              >
-                <Typography variant="subtitle1" component="span">
-                  {sUserName}
-                </Typography>
-                <Typography variant="subtitle2" component="span">
-                  Feb 13 2021
-                </Typography>
-              </Grid>
-            </Box>
+              <Box className={classes.marginAll} >
+                <Grid
+                  container
+                  direction="column"
+                  justify="flex-start"
+                  alignItems="center"
+                >
+                  <Typography variant="subtitle1" component="span">
+                    {sUserName}
+                  </Typography>
+                  <Typography variant="subtitle2" component="span">
+                    Feb 13 2021
+                  </Typography>
+                </Grid>
+              </Box>
             </Container>
             {
               sShowButton ? <Button
-              variant="contained"
-              color="primary"
-              className={classes.marginAll}
-              onClick={() => editArticle()}
-            >
-              Edit
-            </Button> : <Container/>
+                variant="contained"
+                color="primary"
+                className={classes.marginAll}
+                onClick={() => editArticle()}
+              >
+                Edit
+              </Button> : <Container />
             }
-            <FacebookShareButton 
-             quote="Visit the newly lunched Tourism LocalGuide(WebApp)"
-             url="www.localguides.com"
-             >
+            <FacebookShareButton
+              quote="Visit the newly lunched Tourism LocalGuide(WebApp)"
+              url="www.localguides.com"
+            >
               <Button
                 variant="contained"
                 color="primary"
@@ -230,8 +211,9 @@ export default function SingleArticle() {
             image={sArticlePicture}
             title="Live from spacedse album cover"
           />
-
-          {sArticleContent}
+          {
+             ReactHtmlParser(sArticleContent)
+          }
         </Typography>
         <Typography
           variant="h6"
@@ -265,13 +247,13 @@ export default function SingleArticle() {
           </Button>
         </form>
         <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center"
-            py={3} alignContent="center" alignItems="center">
-                {
-                    commentsList ? commentsList.map((row) => (
-                        <SingleComment  postData={row}  />
-                    )) : 'No Comment'  
-                }
-            </Box>
+          py={3} alignContent="center" alignItems="center">
+          {
+            commentsList ? commentsList.map((row) => (
+              <SingleComment postData={row} />
+            )) : 'No Comment'
+          }
+        </Box>
       </Container>
       <Box mb={8} />
     </Container>
